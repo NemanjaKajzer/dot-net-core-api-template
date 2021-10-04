@@ -1,8 +1,7 @@
-﻿using CarDealership.Common.DTOs;
+﻿using System;
 using CarDealership.Common.Enums;
-using System;
 
-namespace Common.DTOs
+namespace CarDealership.Common.DTOs
 {
     public class AdDTO
     {

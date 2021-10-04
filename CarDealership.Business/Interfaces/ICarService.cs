@@ -7,7 +7,8 @@ namespace CarDealership.Business.Interfaces
 {
     public interface ICarService
     {
-        IEnumerable<Car> GetAll();
-        Task<Car> AddCar(CarDTO carDto);
+        Task<IEnumerable<Car>> FilterCarsAsync();
+
+        Task<Car> AddCarAsync(CarDTO carDto);
     }
 }

@@ -1,11 +1,10 @@
 ﻿using CarDealership.Common.Enums;
-using CarDealership.Model.Entities;
 
-namespace CarDealership.Business.Factories
+namespace CarDealership.Business.Factories.Discount
 {
     public static class DiscountFactory
     {
-        public static IDiscount Create(Discount? discount)
+        public static IDiscount Create(Model.Entities.Discount? discount)
         {
             if(discount == null) return new NoDiscount();
 

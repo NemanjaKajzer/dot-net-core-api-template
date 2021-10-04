@@ -3,11 +3,11 @@ using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using Common.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CarDealership.Business.Factories.Discount;
 
 namespace CarDealership.Business.Implementations
 {
@@ -24,17 +24,11 @@ namespace CarDealership.Business.Implementations
             _carRepository = carRepository;
         }
 
-        public IEnumerable<Ad> GetAll()
-        {
-            return  _adRepository.GetAll().AsEnumerable();
-
-
-        }
         public async Task<AdDTO> GetById(Guid id, Guid discountId)
         {
-            var ad = await _adRepository.GetById(id);
-            var car = await _carRepository.GetById(ad.CarId);
-            var discount = DiscountFactory.Create(await _discountRepository.GetById(discountId));
+            var ad = await _adRepository.GetByIdAsync(id);
+            var car = await _carRepository.GetByIdAsync(ad.CarId);
+            var discount = DiscountFactory.Create(await _discountRepository.GetByIdAsync(discountId));
 
             var adDTO = new AdDTO
             {

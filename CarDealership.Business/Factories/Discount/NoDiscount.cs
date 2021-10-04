@@ -1,4 +1,4 @@
-﻿namespace CarDealership.Business.Factories
+﻿namespace CarDealership.Business.Factories.Discount
 {
     public class NoDiscount : IDiscount
     {
