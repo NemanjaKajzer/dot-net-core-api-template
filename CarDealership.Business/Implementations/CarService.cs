@@ -3,7 +3,6 @@ using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CarDealership.Business.Implementations
@@ -16,12 +15,13 @@ namespace CarDealership.Business.Implementations
         {
             _carRepository = carRepository;
         }
-        public IEnumerable<Car> GetAll()
+
+        public Task<IEnumerable<Car>> FilterCarsAsync()
         {
-            return _carRepository.GetAll().AsEnumerable();
+            return _carRepository.FilterAsync(x => x.Brand == "BMW");
         }
 
-        public async Task<Car> AddCar(CarDTO carDto)
+        public async Task<Car> AddCarAsync(CarDTO carDto)
         {
             var newCar = new Car
             {

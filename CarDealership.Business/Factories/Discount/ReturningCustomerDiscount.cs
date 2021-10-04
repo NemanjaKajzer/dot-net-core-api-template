@@ -1,12 +1,10 @@
-﻿using CarDealership.Model.Entities;
-
-namespace CarDealership.Business.Factories
+﻿namespace CarDealership.Business.Factories.Discount
 {
     internal class ReturningCustomerDiscount : IDiscount
     {
-        private readonly Discount _discount;
+        private readonly Model.Entities.Discount _discount;
 
-        public ReturningCustomerDiscount(Discount discount)
+        public ReturningCustomerDiscount(Model.Entities.Discount discount)
         {
             _discount = discount;
         }

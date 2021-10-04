@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Repositories;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace CarDealership.Repositories.Implementations
@@ -16,12 +18,7 @@ namespace CarDealership.Repositories.Implementations
             _dbContext = dbContext;
         }
 
-        public IQueryable<TEntity> GetAll()
-        {
-            return _dbContext.Set<TEntity>();
-        }
-
-        public async Task<TEntity> GetById(Guid id)
+        public async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
@@ -42,7 +39,7 @@ namespace CarDealership.Repositories.Implementations
             return entity;
         }
 
-        public async Task<TEntity> DeleteById(Guid id)
+        public async Task<TEntity> DeleteByIdAsync(Guid id)
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(id);
 
@@ -56,6 +53,11 @@ namespace CarDealership.Repositories.Implementations
             await _dbContext.SaveChangesAsync();
 
             return entity;
+        }
+
+        public async Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicateExpression)
+        {
+            return await _dbContext.Set<TEntity>().Where(predicateExpression).ToListAsync();
         }
     }
 }

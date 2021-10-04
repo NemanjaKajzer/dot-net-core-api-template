@@ -15,10 +15,9 @@ namespace CarDealership.Business.Implementations
             _discountRepository = discountRepository;
         }
 
-        public async Task<Discount> GetById(Guid id)
+        public async Task<Discount> GetByIdAsync(Guid id)
         {
-            return  await _discountRepository.GetById(id);
-
+            return  await _discountRepository.GetByIdAsync(id);
         }
     }
 }

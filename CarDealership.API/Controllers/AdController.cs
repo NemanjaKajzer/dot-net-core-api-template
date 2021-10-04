@@ -1,12 +1,7 @@
 ﻿
 using CarDealership.Business.Interfaces;
-using CarDealership.Common.DTOs;
-using CarDealership.Common.Enums;
-using CarDealership.Model.Entities;
-using Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CarDealership.API.Controllers
@@ -24,14 +19,6 @@ namespace CarDealership.API.Controllers
             _adService = adService;
         }
 
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            var adds = _adService.GetAll();
-
-            return Ok(adds);
-        }
 
         [HttpGet("getdiscounted")]
         public async Task<IActionResult> Get(Guid id, Guid discountId)

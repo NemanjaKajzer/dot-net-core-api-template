@@ -23,15 +23,15 @@ namespace CarDealership.API.Controllers
 
 
         [HttpGet]
-        public IEnumerable<Car> Get()
+        public Task<IEnumerable<Car>> FilterCarsAsync()
         {
-            return _carService.GetAll();
+            return _carService.FilterCarsAsync();
         }
 
         [HttpPost]
-        public async Task<Car> AddCar(CarDTO carDto)
+        public async Task<Car> AddCarAsync(CarDTO carDto)
         {
-            return await _carService.AddCar(carDto);
+            return await _carService.AddCarAsync(carDto);
         }
     }
 }

@@ -6,6 +6,6 @@ namespace CarDealership.Business.Interfaces
 {
     public interface IDiscountService
     {
-        Task<Discount> GetById(Guid id);
+        Task<Discount> GetByIdAsync(Guid id);
     }
 }
