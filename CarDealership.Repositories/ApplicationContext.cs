@@ -15,38 +15,39 @@ namespace CarDealership.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Ad>().HasOne(a => a.Car);
 
             modelBuilder.Entity<Discount>()
-                 .HasData(
-                     new Discount
-                     {
-                         Id = Guid.NewGuid(),
-                         Description = "New customer",
-                         Type = DiscountTypes.NEW_CUSTOMER,
-                         Value = 100
-                     },
-                     new Discount
-                     {
-                         Id = Guid.NewGuid(),
-                         Description = "Returning customer",
-                         Type = DiscountTypes.RETURNING_CUSTOMER,
-                         Value = 5
-                     },
-                     new Discount
-                     {
-                         Id = Guid.NewGuid(),
-                         Description = "Black Friday",
-                         Type = DiscountTypes.BLACK_FRIDAY,
-                         Value = 10
-                     },
-                     new Discount
-                     {
-                         Id = Guid.NewGuid(),
-                         Description = "No Discount",
-                         Type = DiscountTypes.NO_DISCOUNT,
-                         Value = 1
-                     }
-                 );
+                .HasData(
+                    new Discount
+                    {
+                        Id = Guid.NewGuid(),
+                        PromoCode = "NEW",
+                        Type = DiscountTypes.NEW_CUSTOMER,
+                        Value = 100
+                    },
+                    new Discount
+                    {
+                        Id = Guid.NewGuid(),
+                        PromoCode = "RETURN",
+                        Type = DiscountTypes.RETURNING_CUSTOMER,
+                        Value = 5
+                    },
+                    new Discount
+                    {
+                        Id = Guid.NewGuid(),
+                        PromoCode = "BF2021",
+                        Type = DiscountTypes.BLACK_FRIDAY,
+                        Value = 10
+                    },
+                    new Discount
+                    {
+                        Id = Guid.NewGuid(),
+                        PromoCode = "No Discount",
+                        Type = DiscountTypes.NO_DISCOUNT,
+                        Value = 1
+                    }
+                );
 
             var cars = new Car[] {
                 new Car
@@ -74,37 +75,11 @@ namespace CarDealership.Repositories
                     EngineVolume = 1800,
                     Kilometers = 90000,
                     TransmissionType = TransmissionType.Automatic,
-                },
-                new Car
-                {
-                    Id = Guid.NewGuid(),
-                    Brand = "ZASTAVA",
-                    Model = "128",
-                    Power = 200,
-                    Seats = 5,
-                    Doors = 5,
-                    ProductionYear = new DateTime(1990, 1, 1),
-                    EngineVolume = 2000,
-                    Kilometers = 90000,
-                    TransmissionType = TransmissionType.Automatic
                 }
             };
 
             modelBuilder.Entity<Car>()
                 .HasData(cars);
-
-            modelBuilder.Entity<Ad>()
-                .HasData(
-                    new Ad
-                    {
-                        Id = Guid.NewGuid(),
-                        CarId = cars[0].Id,
-                        Currency = Currency.EUR,
-                        Description = "Like new",
-                        Price = 20000
-                    }
-                );
-
 
 
             modelBuilder.Entity<Seller>()

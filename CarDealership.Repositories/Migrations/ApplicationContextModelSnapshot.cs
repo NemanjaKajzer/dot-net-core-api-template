@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Repositories.Migrations
+namespace CarDealership.Repositories.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -25,7 +25,7 @@ namespace Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CarId")
+                    b.Property<Guid?>("CarId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Currency")
@@ -34,24 +34,24 @@ namespace Repositories.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("DiscountId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Price")
                         .HasColumnType("integer");
+
+                    b.Property<Guid?>("SellerId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("Ad");
+                    b.HasIndex("DiscountId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e11fe273-9f25-4068-9ff5-78dcb1e23c67"),
-                            CarId = new Guid("391ccb12-9a6a-446b-be49-7c99cf73252f"),
-                            Currency = 1,
-                            Description = "Lorem ipsum",
-                            Price = 20000
-                        });
+                    b.HasIndex("SellerId");
+
+                    b.ToTable("Ad");
                 });
 
             modelBuilder.Entity("CarDealership.Model.Entities.Car", b =>
@@ -94,7 +94,7 @@ namespace Repositories.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("391ccb12-9a6a-446b-be49-7c99cf73252f"),
+                            Id = new Guid("9f9d8814-562c-4201-a4ed-60b6487ec70f"),
                             Brand = "BMW",
                             Doors = 5,
                             EngineVolume = 1999,
@@ -107,7 +107,7 @@ namespace Repositories.Migrations
                         },
                         new
                         {
-                            Id = new Guid("e11512b9-fb83-489b-97d0-021be88f0858"),
+                            Id = new Guid("cdfaa38b-b658-4ebe-9940-ac8af45c6e9b"),
                             Brand = "Audi",
                             Doors = 5,
                             EngineVolume = 1800,
@@ -126,7 +126,7 @@ namespace Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("PromoCode")
                         .HasColumnType("text");
 
                     b.Property<int>("Type")
@@ -142,29 +142,29 @@ namespace Repositories.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("014a8cf3-cb5c-44e3-be4e-4ed6931310b8"),
-                            Description = "New customer",
+                            Id = new Guid("7ffbe73f-944b-4785-92ab-d45829ee02af"),
+                            PromoCode = "NEW",
                             Type = 1,
                             Value = 100
                         },
                         new
                         {
-                            Id = new Guid("6574ae8c-9e6b-4f35-8609-66ebac9af0c0"),
-                            Description = "Returning customer",
+                            Id = new Guid("d5c93242-8f76-4273-82e3-a6e42766d077"),
+                            PromoCode = "RETURN",
                             Type = 2,
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("df705470-835b-4cb1-b28a-90e0cce7dc81"),
-                            Description = "Black Friday",
+                            Id = new Guid("03259f41-b635-4e58-a46f-ffe001f31f0b"),
+                            PromoCode = "BF2021",
                             Type = 3,
                             Value = 10
                         },
                         new
                         {
-                            Id = new Guid("9b3bc5e0-3f39-49bf-b41b-7435320a78d2"),
-                            Description = "No Discount",
+                            Id = new Guid("0cbe95bf-5cbb-4f55-8918-5f6282aeca31"),
+                            PromoCode = "No Discount",
                             Type = 0,
                             Value = 1
                         });
@@ -192,7 +192,7 @@ namespace Repositories.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("796fb30c-e1a3-4698-be52-f23b615823c5"),
+                            Id = new Guid("8dc85a94-9b23-4b2e-83ba-4ae69938d8e0"),
                             Email = "john.smith@js.com",
                             Name = "John",
                             Surname = "Smith"
@@ -203,11 +203,31 @@ namespace Repositories.Migrations
                 {
                     b.HasOne("CarDealership.Model.Entities.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("CarDealership.Model.Entities.Discount", "Discount")
+                        .WithMany("Ads")
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("CarDealership.Model.Entities.Seller", "Seller")
+                        .WithMany("Ads")
+                        .HasForeignKey("SellerId");
 
                     b.Navigation("Car");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("CarDealership.Model.Entities.Discount", b =>
+                {
+                    b.Navigation("Ads");
+                });
+
+            modelBuilder.Entity("CarDealership.Model.Entities.Seller", b =>
+                {
+                    b.Navigation("Ads");
                 });
 #pragma warning restore 612, 618
         }

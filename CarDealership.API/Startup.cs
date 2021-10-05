@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
 
 
 namespace CarDealership.API
@@ -27,6 +28,7 @@ namespace CarDealership.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
 
             // register services
             services.AddScoped<ICarService, CarService>();
@@ -38,6 +40,7 @@ namespace CarDealership.API
             services.AddScoped<IRepository<Ad>, Repository<Ad>>();
             services.AddScoped<IRepository<Seller>, Repository<Seller>>();
             services.AddScoped<IRepository<Discount>, Repository<Discount>>();
+            services.AddScoped<IAdRepository, AdRepository>();
 
             // register dbContext
             services.AddScoped<DbContext, ApplicationContext>();

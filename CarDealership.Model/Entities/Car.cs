@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using CarDealership.Common.DTOs;
 using CarDealership.Common.Enums;
 
 namespace CarDealership.Model.Entities
@@ -7,6 +8,19 @@ namespace CarDealership.Model.Entities
     public class Car
     {
         public Car() { }
+
+        public Car(CarDTO carDto)
+        {
+            Brand = carDto.Brand;
+            Model = carDto.Model;
+            Power = carDto.Power;
+            Seats = carDto.Seats;
+            Doors = carDto.Doors;
+            ProductionYear = carDto.ProductionYear;
+            EngineVolume = carDto.EngineVolume;
+            Kilometers = carDto.Kilometers;
+            TransmissionType = carDto.TransmissionType;
+        }
 
         public Car(Guid id, string brand, string model, int power, int seats, int doors, DateTime productionYear, int engineVolume, int kilometers, TransmissionType transmissionType)
         {

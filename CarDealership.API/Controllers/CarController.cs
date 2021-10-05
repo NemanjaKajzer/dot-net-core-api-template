@@ -2,36 +2,57 @@
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace CarDealership.API.Controllers
 
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CarController : ControllerBase
     {
 
         private readonly ICarService _carService;
+        private readonly IMapper _mapper;
 
-        public CarController(ICarService carService)
+        public CarController(ICarService carService, IMapper mapper)
         {
             _carService = carService;
+            _mapper = mapper;
         }
 
 
-        [HttpGet]
-        public Task<IEnumerable<Car>> FilterCarsAsync()
+        [HttpGet("{id:Guid}")]
+        public async Task<CarDTO> GetCarByIdAsync(Guid id)
         {
-            return _carService.FilterCarsAsync();
+            var car = await _carService.GetCarByIdAsync(id);
+            return _mapper.Map<CarDTO>(car);
         }
 
         [HttpPost]
-        public async Task<Car> AddCarAsync(CarDTO carDto)
+        public async Task<CarDTO> AddCarAsync(CarDTO carDto)
         {
-            return await _carService.AddCarAsync(carDto);
+            var car = await _carService.AddCarAsync(carDto);
+            return _mapper.Map<CarDTO>(car);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<CarDTO> UpdateCarAsync(Guid id, [FromBody] JsonPatchDocument<Car> patchDoc)
+        {
+            var car = await _carService.UpdateCarAsync(id, patchDoc);
+            return _mapper.Map<CarDTO>(car);
+        }
+
+
+        [HttpDelete("{id:Guid}")]
+        public async Task<ActionResult<CarDTO>> DeleteCarAsync(Guid id)
+        {
+            var car = await _carService.DeleteCarAsync(id);
+            return _mapper.Map<CarDTO>(car);
         }
     }
 }

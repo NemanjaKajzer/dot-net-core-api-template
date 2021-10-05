@@ -1,6 +1,5 @@
 ﻿using CarDealership.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +10,9 @@ namespace CarDealership.Repositories.Implementations
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-        private readonly ApplicationContext _dbContext;
+        private readonly DbContext _dbContext;
 
-        public Repository(ApplicationContext dbContext)
+        public Repository(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -22,6 +21,7 @@ namespace CarDealership.Repositories.Implementations
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
+
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
@@ -59,5 +59,18 @@ namespace CarDealership.Repositories.Implementations
         {
             return await _dbContext.Set<TEntity>().Where(predicateExpression).ToListAsync();
         }
+
+        //public async Task<IQueryable<TEntity>> FilterAsync2(Expression<Func<TEntity, bool>> predicateExpression, params Expression<Func<TEntity, object>>[] includes)
+        //{
+        //    if (includes != null)
+        //    {
+        //        predicateExpression = includes.Aggregate(predicateExpression,
+        //            (current, include) => current.Include(include));
+        //    }
+
+        //    return  _dbContext.Set<TEntity>().Where(predicateExpression).Include(includes);
+        //}
+
+
     }
 }

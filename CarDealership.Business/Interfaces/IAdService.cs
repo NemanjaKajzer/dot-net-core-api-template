@@ -8,6 +8,12 @@ namespace CarDealership.Business.Interfaces
 {
     public interface IAdService
     {
-        Task<AdDTO> GetById(Guid id, Guid discountId);
+        Task<AdPresentationDTO> GetAdByIdAsync(Guid id, string promoCode);
+
+        Task<Ad> AddAdAsync(AdCreationDTO adDTO);
+
+        //Task<AdDTO> UpdateAdAsync(Guid id, JsonPatchDocument<Car> patchDoc);
+
+        Task<Ad> DeleteAdAsync(Guid id);
     }
 }
