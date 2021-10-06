@@ -2,6 +2,8 @@
 {
     public enum Currency
     {
+        NOT_SET,
+
         USD,
 
         EUR,

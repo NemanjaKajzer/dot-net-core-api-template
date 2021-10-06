@@ -52,8 +52,6 @@ namespace CarDealership.Model.Entities
 
         public Seller Seller { get; set; }
 
-        public Discount Discount { get; set; }
-
         public int Price { get; set; }
 
         public Currency Currency { get; set; }

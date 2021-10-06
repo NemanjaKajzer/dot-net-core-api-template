@@ -28,11 +28,14 @@ namespace CarDealership.API.Controllers
         public async Task<IActionResult> GetAdByIdAsync(Guid id, string? promoCode)
         {
             var ad = await _adService.GetAdByIdAsync(id, promoCode);
+            var adPresentation = _mapper.Map<AdPresentationDTO>(ad);
 
-            if (ad == null)
+            if (ad.Id == Guid.Empty)
+            {
                 return NotFound();
+            }
 
-            return Ok(ad);
+            return Ok(adPresentation);
         }
 
         //[HttpGet("getdiscounted")]

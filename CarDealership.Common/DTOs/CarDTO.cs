@@ -19,7 +19,7 @@ namespace CarDealership.Common.DTOs
 
         public int Doors { get; set; }
 
-        public DateTime ProductionYear { get; set; }
+        public int ProductionYear { get; set; }
 
         public int EngineVolume { get; set; }
 

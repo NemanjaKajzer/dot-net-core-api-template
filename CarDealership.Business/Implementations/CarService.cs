@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CarDealership.Common.Enums;
 
 namespace CarDealership.Business.Implementations
 {
@@ -35,14 +36,27 @@ namespace CarDealership.Business.Implementations
             return await _carRepository.AddAsync(newCar);
         }
 
-        public async Task<Car> UpdateCarAsync(Guid id, JsonPatchDocument<Car> patchDoc)
+        public async Task<Car> UpdateCarAsync(CarDTO carDTO)
         {
-            var car = _carRepository.GetByIdAsync(id).Result;
-            patchDoc.ApplyTo(car);
+            var car = _carRepository.GetByIdAsync(carDTO.Id).Result;
 
-            await _carRepository.UpdateAsync(car);
+            car.Brand = carDTO.Brand ?? car.Brand;
+            car.Model = carDTO.Model ?? car.Model;
 
-            return car;
+            car.Power = carDTO.Power == 0 ? car.Power : carDTO.Power;
+            car.Seats = carDTO.Seats == 0 ? car.Seats : carDTO.Seats;
+            car.Doors = carDTO.Doors == 0 ? car.Doors : carDTO.Doors;
+            car.EngineVolume = carDTO.EngineVolume == 0 ? car.EngineVolume : carDTO.EngineVolume;
+            car.Kilometers = carDTO.Kilometers == 0 ? car.Kilometers : carDTO.Kilometers;
+
+            car.ProductionYear = carDTO.ProductionYear == 0 ? car.ProductionYear : carDTO.ProductionYear;
+
+            if (carDTO.TransmissionType != TransmissionType.NOT_SET)
+            {
+                car.TransmissionType = carDTO.TransmissionType;
+            }
+
+            return await _carRepository.UpdateAsync(car);
         }
 
 

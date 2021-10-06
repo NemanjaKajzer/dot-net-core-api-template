@@ -34,9 +34,6 @@ namespace CarDealership.Repositories.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("DiscountId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Price")
                         .HasColumnType("integer");
 
@@ -46,8 +43,6 @@ namespace CarDealership.Repositories.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
-
-                    b.HasIndex("DiscountId");
 
                     b.HasIndex("SellerId");
 
@@ -78,8 +73,8 @@ namespace CarDealership.Repositories.Migrations
                     b.Property<int>("Power")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("ProductionYear")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<int>("ProductionYear")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Seats")
                         .HasColumnType("integer");
@@ -94,29 +89,29 @@ namespace CarDealership.Repositories.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9f9d8814-562c-4201-a4ed-60b6487ec70f"),
+                            Id = new Guid("c5d040f0-aa56-4923-8c03-82689650554d"),
                             Brand = "BMW",
                             Doors = 5,
                             EngineVolume = 1999,
                             Kilometers = 100000,
                             Model = "520",
                             Power = 150,
-                            ProductionYear = new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductionYear = 2000,
                             Seats = 5,
-                            TransmissionType = 1
+                            TransmissionType = 2
                         },
                         new
                         {
-                            Id = new Guid("cdfaa38b-b658-4ebe-9940-ac8af45c6e9b"),
+                            Id = new Guid("2523e318-f9fc-4beb-9347-e1ab0ae14347"),
                             Brand = "Audi",
                             Doors = 5,
                             EngineVolume = 1800,
                             Kilometers = 90000,
                             Model = "Q3",
                             Power = 170,
-                            ProductionYear = new DateTime(2019, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProductionYear = 2010,
                             Seats = 5,
-                            TransmissionType = 0
+                            TransmissionType = 1
                         });
                 });
 
@@ -142,28 +137,28 @@ namespace CarDealership.Repositories.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("7ffbe73f-944b-4785-92ab-d45829ee02af"),
+                            Id = new Guid("70511618-91ac-451f-8c45-5b52d2da9f86"),
                             PromoCode = "NEW",
                             Type = 1,
                             Value = 100
                         },
                         new
                         {
-                            Id = new Guid("d5c93242-8f76-4273-82e3-a6e42766d077"),
+                            Id = new Guid("e7902086-8de5-4581-816c-d2c301448f10"),
                             PromoCode = "RETURN",
                             Type = 2,
                             Value = 5
                         },
                         new
                         {
-                            Id = new Guid("03259f41-b635-4e58-a46f-ffe001f31f0b"),
+                            Id = new Guid("bb6ff972-0c1f-4f12-b089-a12a301f7dea"),
                             PromoCode = "BF2021",
                             Type = 3,
                             Value = 10
                         },
                         new
                         {
-                            Id = new Guid("0cbe95bf-5cbb-4f55-8918-5f6282aeca31"),
+                            Id = new Guid("0f68dad7-1809-477e-82b6-145dd7d98904"),
                             PromoCode = "No Discount",
                             Type = 0,
                             Value = 1
@@ -192,7 +187,7 @@ namespace CarDealership.Repositories.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8dc85a94-9b23-4b2e-83ba-4ae69938d8e0"),
+                            Id = new Guid("b1846008-e76a-4f59-aa64-cd247896a63e"),
                             Email = "john.smith@js.com",
                             Name = "John",
                             Surname = "Smith"
@@ -205,24 +200,13 @@ namespace CarDealership.Repositories.Migrations
                         .WithMany()
                         .HasForeignKey("CarId");
 
-                    b.HasOne("CarDealership.Model.Entities.Discount", "Discount")
-                        .WithMany("Ads")
-                        .HasForeignKey("DiscountId");
-
                     b.HasOne("CarDealership.Model.Entities.Seller", "Seller")
                         .WithMany("Ads")
                         .HasForeignKey("SellerId");
 
                     b.Navigation("Car");
 
-                    b.Navigation("Discount");
-
                     b.Navigation("Seller");
-                });
-
-            modelBuilder.Entity("CarDealership.Model.Entities.Discount", b =>
-                {
-                    b.Navigation("Ads");
                 });
 
             modelBuilder.Entity("CarDealership.Model.Entities.Seller", b =>
