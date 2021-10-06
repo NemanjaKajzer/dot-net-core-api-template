@@ -1,11 +1,11 @@
 ﻿
 #nullable enable
+using AutoMapper;
 using CarDealership.Business.Interfaces;
+using CarDealership.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
-using CarDealership.Common.DTOs;
 
 namespace CarDealership.API.Controllers
 
@@ -53,6 +53,20 @@ namespace CarDealership.API.Controllers
         public async Task<AdCreationDTO> AddAdAsync(AdCreationDTO adCreationDTO)
         {
             var ad = await _adService.AddAdAsync(adCreationDTO);
+            return _mapper.Map<AdCreationDTO>(ad);
+        }
+
+        [HttpPut]
+        public async Task<AdCreationDTO> UpdateAdAsync(AdCreationDTO adCreationDTO)
+        {
+            var ad = await _adService.UpdateAdAsync(adCreationDTO);
+            return _mapper.Map<AdCreationDTO>(ad);
+        }
+
+        [HttpDelete("{id:Guid}")]
+        public async Task<AdCreationDTO> DeleteAdAsync(Guid id)
+        {
+            var ad = await _adService.DeleteAdAsync(id);
             return _mapper.Map<AdCreationDTO>(ad);
         }
     }

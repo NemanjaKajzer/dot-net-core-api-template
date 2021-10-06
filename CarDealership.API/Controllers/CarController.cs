@@ -1,12 +1,10 @@
 ﻿
+using AutoMapper;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
-using CarDealership.Model.Entities;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace CarDealership.API.Controllers
 

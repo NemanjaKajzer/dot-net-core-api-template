@@ -29,16 +29,6 @@ namespace CarDealership.Business.Implementations
             return await _sellerRepository.AddAsync(newSeller);
         }
 
-        //public async Task<Seller> UpdateSellerAsync(Guid id, JsonPatchDocument<Seller> patchDoc)
-        //{
-        //    var seller = _sellerRepository.GetByIdAsync(id).Result;
-        //    patchDoc.ApplyTo(seller);
-
-        //    await _sellerRepository.UpdateAsync(seller);
-
-        //    return seller;
-        //}
-
         public async Task<Seller> UpdateSellerAsync(SellerDTO sellerDTO)
         {
             var seller = _sellerRepository.GetByIdAsync(sellerDTO.Id).Result;

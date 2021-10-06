@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CarDealership.Common.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CarDealership.Common.Enums;
 
 
 namespace CarDealership.Model.Entities
