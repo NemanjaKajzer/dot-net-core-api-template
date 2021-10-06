@@ -11,8 +11,9 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": false,
-      "launchUrl": "car",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:36695",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
