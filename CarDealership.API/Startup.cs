@@ -30,6 +30,12 @@ namespace CarDealership.API
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
+            //Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "CarDealership API", Version = "v1" });
+            });
+
             // register services
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<IAdService, AdService>();
@@ -67,6 +73,16 @@ namespace CarDealership.API
             {
                 endpoints.MapControllers();
             });
+
+            // Enable middleware to serve geberated Swagger as JSON endpoint.
+            app.UseSwagger();
+
+            //Enable middleware to serve swagger-ui specifying the Swagger JSON endpoint
+            app.UseSwaggerUI(c =>
+           {
+               c.SwaggerEndpoint("/swagger/v1/swagger.json", "CarDealership API");
+           });
+            
         }
     }
 }
