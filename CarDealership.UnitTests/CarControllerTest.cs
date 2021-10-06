@@ -1,7 +1,11 @@
+using AutoMapper;
 using CarDealership.API.Controllers;
 using CarDealership.Business.Interfaces;
+using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -9,17 +13,45 @@ namespace CarDealership.UnitTests
 {
     public class CarControllerTest
     {
+
         [Fact]
-        public void GetAllTest()
+        public void GetCarByIdAsyncTest()
         {
-            //var mockCarService = new Mock<ICarService>();
-            //mockCarService.Setup(carService => carService.GetAll()).Returns(new List<Car>(){ new() { Brand = "Brand" } });
+            var carId = Guid.NewGuid();
 
-            //var controller = new CarController(mockCarService.Object);
+            var mockCarService = new Mock<ICarService>();
+            var mockMapper = new Mock<IMapper>();
 
-            //var result = controller.Get();
+            mockCarService.Setup(carService => carService.GetCarByIdAsync(carId)).ReturnsAsync(new Car { Id = carId });
+            mockMapper.Setup(mapper => mapper.Map<CarDTO>(It.IsAny<Car>())).Returns(new CarDTO { Id = carId });
 
-            //Assert.Single(result);
+
+            var controller = new CarController(mockCarService.Object, mockMapper.Object);
+
+            var result = controller.GetCarByIdAsync(carId).Result as OkObjectResult;
+            Assert.NotNull(result);
+            Assert.Equal(200, result.StatusCode);
+
+        }
+
+        [Fact]
+        public void AddCarAsyncTest()
+        {
+            var carId = Guid.NewGuid();
+            var expectedDTO = new CarDTO { Id = carId };
+
+            var mockCarService = new Mock<ICarService>();
+            var mockMapper = new Mock<IMapper>();
+
+            mockCarService.Setup(carService => carService.AddCarAsync(expectedDTO)).ReturnsAsync(new Car { Id = carId });
+            mockMapper.Setup(mapper => mapper.Map<CarDTO>(It.IsAny<Car>())).Returns(expectedDTO);
+
+            var controller = new CarController(mockCarService.Object, mockMapper.Object);
+
+            var result = controller.AddCarAsync(expectedDTO).Result;
+
+            Assert.NotNull(result);
+            Assert.Equal(carId.ToString(), result.Id.ToString());
         }
     }
 }

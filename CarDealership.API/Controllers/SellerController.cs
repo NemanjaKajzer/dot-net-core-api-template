@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
-using CarDealership.Model.Entities;
-using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,10 +24,17 @@ namespace CarDealership.API.Controllers
 
 
         [HttpGet("{id:Guid}")]
-        public async Task<SellerDTO> GetSellerByIdAsync(Guid id)
+        public async Task<IActionResult> GetSellerByIdAsync(Guid id)
         {
             var seller = await _sellerService.GetSellerByIdAsync(id);
-            return _mapper.Map<SellerDTO>(seller);
+            var sellerDTO = _mapper.Map<SellerDTO>(seller);
+
+            if (seller.Id.Equals(Guid.Empty))
+            {
+                return NotFound();
+            }
+
+            return Ok(sellerDTO);
         }
 
         [HttpPost]
@@ -40,13 +43,6 @@ namespace CarDealership.API.Controllers
             var seller = await _sellerService.AddSellerAsync(sellerDTO);
             return _mapper.Map<SellerDTO>(seller);
         }
-
-        //[HttpPatch("{id}")]
-        //public async Task<SellerDTO> UpdateSellerAsync(Guid id, [FromBody] JsonPatchDocument<Seller> patchDoc)
-        //{
-        //    var seller = await _sellerService.UpdateSellerAsync(id, patchDoc);
-        //    return _mapper.Map<SellerDTO>(seller);
-        //}
 
         [HttpPut]
         public async Task<SellerDTO> UpdateSellerAsync(SellerDTO sellerDTO)

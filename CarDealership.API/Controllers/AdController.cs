@@ -38,17 +38,6 @@ namespace CarDealership.API.Controllers
             return Ok(adPresentation);
         }
 
-        //[HttpGet("getdiscounted")]
-        //public async Task<IActionResult> Get(Guid id, string)
-        //{
-        //    var ad = await _adService.GetAdByIdAsync(id);
-
-        //    if (ad == null)
-        //        return NotFound();
-
-        //    return Ok(ad);
-        //}
-
         [HttpPost]
         public async Task<AdCreationDTO> AddAdAsync(AdCreationDTO adCreationDTO)
         {
