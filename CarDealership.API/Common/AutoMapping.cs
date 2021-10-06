@@ -10,6 +10,7 @@ namespace CarDealership.API.Common
         {
             CreateMap<Car, CarDTO>();
             CreateMap<Ad, AdCreationDTO>();
+            CreateMap<Ad, AdPresentationDTO>();
             CreateMap<Seller, SellerDTO>();
         }
     }

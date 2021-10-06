@@ -16,5 +16,8 @@ namespace CarDealership.Repositories.Interfaces
         Task<TEntity> DeleteByIdAsync(Guid id);
 
         Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicateExpression);
+
+        Task<List<TEntity>> FilterNestedAsync(Expression<Func<TEntity, bool>> predicate,
+            params Expression<Func<TEntity, object>>[] includes);
     }
 }

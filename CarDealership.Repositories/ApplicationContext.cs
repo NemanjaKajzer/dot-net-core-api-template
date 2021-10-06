@@ -58,10 +58,10 @@ namespace CarDealership.Repositories
                     Power = 150,
                     Seats = 5,
                     Doors = 5,
-                    ProductionYear = new DateTime(2020, 1, 1),
+                    ProductionYear = 2000,
                     EngineVolume = 1999,
                     Kilometers = 100000,
-                    TransmissionType = TransmissionType.Manual,
+                    TransmissionType = TransmissionType.MANUAL,
                 },
                 new Car
                 {
@@ -71,10 +71,10 @@ namespace CarDealership.Repositories
                     Power = 170,
                     Seats = 5,
                     Doors = 5,
-                    ProductionYear = new DateTime(2019, 1, 1),
+                    ProductionYear = 2010,
                     EngineVolume = 1800,
                     Kilometers = 90000,
-                    TransmissionType = TransmissionType.Automatic,
+                    TransmissionType = TransmissionType.AUTOMATIC,
                 }
             };
 

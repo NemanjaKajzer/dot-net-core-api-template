@@ -41,9 +41,9 @@ namespace CarDealership.API.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<CarDTO> UpdateCarAsync(Guid id, [FromBody] JsonPatchDocument<Car> patchDoc)
+        public async Task<CarDTO> UpdateCarAsync(CarDTO carDTO)
         {
-            var car = await _carService.UpdateCarAsync(id, patchDoc);
+            var car = await _carService.UpdateCarAsync(carDTO);
             return _mapper.Map<CarDTO>(car);
         }
 

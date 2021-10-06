@@ -28,7 +28,5 @@ namespace CarDealership.Model.Entities
 
         public int Value { get; set; }
 
-        public List<Ad> Ads { get; set; }
-
     }
 }

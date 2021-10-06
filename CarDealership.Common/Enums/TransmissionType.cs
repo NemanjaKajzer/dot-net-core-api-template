@@ -2,8 +2,10 @@
 {
     public enum TransmissionType
     {
-        Automatic,
+        NOT_SET,
+        
+        AUTOMATIC,
 
-        Manual
+        MANUAL
     }
 }

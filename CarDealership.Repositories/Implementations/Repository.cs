@@ -60,17 +60,20 @@ namespace CarDealership.Repositories.Implementations
             return await _dbContext.Set<TEntity>().Where(predicateExpression).ToListAsync();
         }
 
-        //public async Task<IQueryable<TEntity>> FilterAsync2(Expression<Func<TEntity, bool>> predicateExpression, params Expression<Func<TEntity, object>>[] includes)
-        //{
-        //    if (includes != null)
-        //    {
-        //        predicateExpression = includes.Aggregate(predicateExpression,
-        //            (current, include) => current.Include(include));
-        //    }
+        public async Task<List<TEntity>> FilterNestedAsync(Expression<Func<TEntity, bool>> predicate,
+            params Expression<Func<TEntity, object>>[] includes)
+        {
+            var query = _dbContext.Set<TEntity>().AsQueryable();
 
-        //    return  _dbContext.Set<TEntity>().Where(predicateExpression).Include(includes);
-        //}
+            foreach (var include in includes)
+            {
+                if (include.Body is MemberExpression memberExpression)
+                    query = query.Include(memberExpression.Member.Name);
+            }
 
+            Console.WriteLine(query.ToQueryString());
 
+            return await query.Where(predicate).ToListAsync();
+        }
     }
 }
