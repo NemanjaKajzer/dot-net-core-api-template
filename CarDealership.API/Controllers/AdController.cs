@@ -6,6 +6,7 @@ using CarDealership.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CarDealership.API.Controllers
 
@@ -17,57 +18,103 @@ namespace CarDealership.API.Controllers
 
         private readonly IAdService _adService;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public AdController(IAdService adService, IMapper mapper)
+        public AdController(IAdService adService, IMapper mapper, ILogger<AdController> logger)
         {
             _adService = adService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetAdByIdAsync(Guid id, string? promoCode)
         {
-            var ad = await _adService.GetAdByIdAsync(id, promoCode);
-            var adPresentation = _mapper.Map<AdPresentationDTO>(ad);
-
-            if (ad.Id == Guid.Empty)
+            try
             {
-                return NotFound();
+                var ad = await _adService.GetAdByIdAsync(id, promoCode);
+                var adPresentation = _mapper.Map<AdPresentationDTO>(ad);
+
+                if (ad.Id == Guid.Empty)
+                {
+                    _logger.LogInformation("Could not find Ad with Id: " + id);
+                    return NoContent();
+                }
+
+                return Ok(adPresentation);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Could not retrieve Ad with Id: " + id + Environment.NewLine + e.Message);
+#if DEBUG
+                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
+#endif
+#if RELEASE
+                return StatusCode(500, e.Message);
+#endif
             }
 
-            return Ok(adPresentation);
         }
 
-        //[HttpGet("getdiscounted")]
-        //public async Task<IActionResult> Get(Guid id, string)
-        //{
-        //    var ad = await _adService.GetAdByIdAsync(id);
-
-        //    if (ad == null)
-        //        return NotFound();
-
-        //    return Ok(ad);
-        //}
-
         [HttpPost]
-        public async Task<AdCreationDTO> AddAdAsync(AdCreationDTO adCreationDTO)
+        public async Task<IActionResult> AddAdAsync(AdCreationDTO adCreationDTO)
         {
-            var ad = await _adService.AddAdAsync(adCreationDTO);
-            return _mapper.Map<AdCreationDTO>(ad);
+            try
+            {
+                var ad = await _adService.AddAdAsync(adCreationDTO);
+                return Created("/api/Ad", ad);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Could not add Ad. " + e.Message);
+#if DEBUG
+                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
+#endif
+#if RELEASE
+                return StatusCode(500, e.Message);
+#endif
+            }
         }
 
         [HttpPut]
-        public async Task<AdCreationDTO> UpdateAdAsync(AdCreationDTO adCreationDTO)
+        public async Task<IActionResult> UpdateAdAsync(AdCreationDTO adCreationDTO)
         {
-            var ad = await _adService.UpdateAdAsync(adCreationDTO);
-            return _mapper.Map<AdCreationDTO>(ad);
+            try
+            {
+                var ad = await _adService.UpdateAdAsync(adCreationDTO);
+                return Ok(ad);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Could not update Ad: " + adCreationDTO.Id);
+#if DEBUG
+                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
+#endif
+#if RELEASE
+                return StatusCode(500, e.Message);
+#endif
+            }
         }
 
         [HttpDelete("{id:Guid}")]
-        public async Task<AdCreationDTO> DeleteAdAsync(Guid id)
+        public async Task<IActionResult> DeleteAdAsync(Guid id)
         {
-            var ad = await _adService.DeleteAdAsync(id);
-            return _mapper.Map<AdCreationDTO>(ad);
+            try
+            {
+                var ad = await _adService.DeleteAdAsync(id);
+                return Ok(ad);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+#if DEBUG
+                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
+#endif
+#if RELEASE
+                return StatusCode(500, e.Message);
+#endif
+            }
+
         }
     }
 }
