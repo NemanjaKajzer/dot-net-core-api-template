@@ -1,15 +1,13 @@
-﻿using CarDealership.Business.Factories;
+﻿using CarDealership.Business.Factories.Discount;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
+using CarDealership.Common.Enums;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CarDealership.Business.Factories.Discount;
-using CarDealership.Common.Enums;
-using Microsoft.EntityFrameworkCore;
 
 namespace CarDealership.Business.Implementations
 {

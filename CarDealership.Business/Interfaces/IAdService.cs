@@ -1,8 +1,7 @@
-﻿using CarDealership.Model.Entities;
+﻿using CarDealership.Common.DTOs;
+using CarDealership.Model.Entities;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using CarDealership.Common.DTOs;
 
 namespace CarDealership.Business.Interfaces
 {

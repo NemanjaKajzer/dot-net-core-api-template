@@ -4,6 +4,7 @@ using CarDealership.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,11 +16,13 @@ namespace CarDealership.API.Controllers
     {
         private readonly ISellerService _sellerService;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public SellerController(ISellerService sellerService, IMapper mapper)
+        public SellerController(ISellerService sellerService, IMapper mapper, ILogger<SellerController> logger)
         {
             _sellerService = sellerService;
             _mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -29,8 +32,9 @@ namespace CarDealership.API.Controllers
             var seller = await _sellerService.GetSellerByIdAsync(id);
             var sellerDTO = _mapper.Map<SellerDTO>(seller);
 
-            if (seller.Id.Equals(Guid.Empty))
+            if (seller == null)
             {
+                _logger.LogInformation("Could not find Seller with Id: " + id);
                 return NotFound();
             }
 

@@ -1,12 +1,11 @@
 ﻿using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
+using CarDealership.Common.Enums;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CarDealership.Common.Enums;
 
 namespace CarDealership.Business.Implementations
 {

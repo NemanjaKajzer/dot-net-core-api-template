@@ -5,6 +5,7 @@ using CarDealership.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CarDealership.API.Controllers
 
@@ -16,11 +17,13 @@ namespace CarDealership.API.Controllers
 
         private readonly ICarService _carService;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public CarController(ICarService carService, IMapper mapper)
+        public CarController(ICarService carService, IMapper mapper, ILogger<CarController> logger)
         {
             _carService = carService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet("{id:Guid}")]
@@ -31,6 +34,7 @@ namespace CarDealership.API.Controllers
 
             if (car.Id.Equals(Guid.Empty))
             {
+                _logger.LogInformation("Could not find Car with Id: " + id);
                 return NotFound();
             }
 
@@ -40,8 +44,18 @@ namespace CarDealership.API.Controllers
         [HttpPost]
         public async Task<CarDTO> AddCarAsync(CarDTO carDto)
         {
-            var car = await _carService.AddCarAsync(carDto);
-            return _mapper.Map<CarDTO>(car);
+            try
+            {
+                var car = await _carService.AddCarAsync(carDto);
+                return _mapper.Map<CarDTO>(car);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Car could not be added. " + e.Message);
+                return carDto;
+            }
+
+            
         }
 
         [HttpPatch("{id}")]
