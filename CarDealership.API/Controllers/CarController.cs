@@ -5,6 +5,7 @@ using CarDealership.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using CarDealership.API.Common.Response;
 using Microsoft.Extensions.Logging;
 
 namespace CarDealership.API.Controllers
@@ -18,59 +19,87 @@ namespace CarDealership.API.Controllers
         private readonly ICarService _carService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
+        private readonly IResponseStatus _responseStatus;
 
-        public CarController(ICarService carService, IMapper mapper, ILogger<CarController> logger)
+        public CarController(ICarService carService, IMapper mapper, ILogger<CarController> logger, IResponseStatus responseStatus)
         {
             _carService = carService;
             _mapper = mapper;
             _logger = logger;
+            _responseStatus = responseStatus;
         }
 
         [HttpGet("{id:Guid}")]
         public async Task<IActionResult> GetCarByIdAsync(Guid id)
         {
-            var car = await _carService.GetCarByIdAsync(id);
-            var carDTO = _mapper.Map<CarDTO>(car);
-
-            if (car.Id.Equals(Guid.Empty))
+            try
             {
-                _logger.LogInformation("Could not find Car with Id: " + id);
-                return NotFound();
-            }
+                var car = await _carService.GetCarByIdAsync(id);
+                var carDTO = _mapper.Map<CarDTO>(car);
 
-            return Ok(carDTO);
+                if (car.Id.Equals(Guid.Empty))
+                {
+                    _logger.LogInformation("Could not find Car with Id: " + id);
+                    return NotFound();
+                }
+
+                return Ok(carDTO);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Car could not be found. " + e.Message);
+                return _responseStatus.CustomStatusCode(500, e);
+            }
+            
         }
 
         [HttpPost]
-        public async Task<CarDTO> AddCarAsync(CarDTO carDto)
+        public async Task<IActionResult> AddCarAsync(CarDTO carDto)
         {
             try
             {
                 var car = await _carService.AddCarAsync(carDto);
-                return _mapper.Map<CarDTO>(car);
+                return Ok(car);
             }
             catch (Exception e)
             {
                 _logger.LogError("Car could not be added. " + e.Message);
-                return carDto;
+                return _responseStatus.CustomStatusCode(500, e);
             }
 
             
         }
 
         [HttpPatch("{id}")]
-        public async Task<CarDTO> UpdateCarAsync(CarDTO carDTO)
+        public async Task<IActionResult> UpdateCarAsync(CarDTO carDTO)
         {
-            var car = await _carService.UpdateCarAsync(carDTO);
-            return _mapper.Map<CarDTO>(car);
+            try
+            {
+                var car = await _carService.UpdateCarAsync(carDTO);
+                return Ok(car);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Car could not be updated. " + e.Message);
+                return _responseStatus.CustomStatusCode(500, e);
+            }
         }
 
 
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult<CarDTO>> DeleteCarAsync(Guid id)
+        public async Task<IActionResult> DeleteCarAsync(Guid id)
         {
-            var car = await _carService.DeleteCarAsync(id);
-            return _mapper.Map<CarDTO>(car);
+            try
+            {
+                var car = await _carService.DeleteCarAsync(id);
+                return Ok(car);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Car could not be deketed. " + e.Message);
+                return _responseStatus.CustomStatusCode(500, e);
+            }
+            
         }
     }
 }

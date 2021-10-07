@@ -6,6 +6,7 @@ using CarDealership.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using CarDealership.API.Common.Response;
 using Microsoft.Extensions.Logging;
 
 namespace CarDealership.API.Controllers
@@ -19,12 +20,14 @@ namespace CarDealership.API.Controllers
         private readonly IAdService _adService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
+        private readonly IResponseStatus _responseStatus;
 
-        public AdController(IAdService adService, IMapper mapper, ILogger<AdController> logger)
+        public AdController(IAdService adService, IMapper mapper, ILogger<AdController> logger, IResponseStatus responseStatus)
         {
             _adService = adService;
             _mapper = mapper;
             _logger = logger;
+            _responseStatus = responseStatus;
         }
 
         [HttpGet("{id:Guid}")]
@@ -46,12 +49,7 @@ namespace CarDealership.API.Controllers
             catch (Exception e)
             {
                 _logger.LogError("Could not retrieve Ad with Id: " + id + Environment.NewLine + e.Message);
-#if DEBUG
-                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
-#endif
-#if RELEASE
-                return StatusCode(500, e.Message);
-#endif
+                return _responseStatus.CustomStatusCode(500, e);
             }
 
         }
@@ -67,12 +65,7 @@ namespace CarDealership.API.Controllers
             catch (Exception e)
             {
                 _logger.LogError("Could not add Ad. " + e.Message);
-#if DEBUG
-                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
-#endif
-#if RELEASE
-                return StatusCode(500, e.Message);
-#endif
+                return _responseStatus.CustomStatusCode(500, e);
             }
         }
 
@@ -87,12 +80,7 @@ namespace CarDealership.API.Controllers
             catch (Exception e)
             {
                 _logger.LogError("Could not update Ad: " + adCreationDTO.Id);
-#if DEBUG
-                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
-#endif
-#if RELEASE
-                return StatusCode(500, e.Message);
-#endif
+                return _responseStatus.CustomStatusCode(500, e);
             }
         }
 
@@ -107,12 +95,7 @@ namespace CarDealership.API.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-#if DEBUG
-                return StatusCode(500, e.Message + Environment.NewLine + e.StackTrace);
-#endif
-#if RELEASE
-                return StatusCode(500, e.Message);
-#endif
+                return _responseStatus.CustomStatusCode(500, e);
             }
 
         }

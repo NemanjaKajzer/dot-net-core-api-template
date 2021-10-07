@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
+using CarDealership.API.Common.Response;
 
 
 namespace CarDealership.API
@@ -35,6 +36,8 @@ namespace CarDealership.API
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "CarDealership API", Version = "v1" });
             });
+
+            services.AddScoped<IResponseStatus, ResponseStatus>();
 
             // register services
             services.AddScoped<ICarService, CarService>();
