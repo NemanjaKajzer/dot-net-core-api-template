@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using CarDealership.Common.DTOs;
+﻿using CarDealership.Common.DTOs;
 using CarDealership.Common.Enums;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarDealership.Model.Entities
 {
@@ -22,7 +22,7 @@ namespace CarDealership.Model.Entities
             TransmissionType = carDto.TransmissionType;
         }
 
-        public Car(Guid id, string brand, string model, int power, int seats, int doors, DateTime productionYear, int engineVolume, int kilometers, TransmissionType transmissionType)
+        public Car(Guid id, string brand, string model, int power, int seats, int doors, int productionYear, int engineVolume, int kilometers, TransmissionType transmissionType)
         {
             Id = id;
             Brand = brand;
@@ -49,11 +49,11 @@ namespace CarDealership.Model.Entities
 
         public int Doors { get; set; }
 
-        public DateTime ProductionYear { get; set; }
-
         public int EngineVolume { get; set; }
 
         public int Kilometers { get; set; }
+
+        public int ProductionYear { get; set; }
 
         public TransmissionType TransmissionType { get; set; }
 

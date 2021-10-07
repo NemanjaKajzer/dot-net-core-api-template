@@ -1,8 +1,8 @@
-﻿using CarDealership.Common.Enums;
+﻿using CarDealership.Common.DTOs;
+using CarDealership.Common.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CarDealership.Common.DTOs;
 
 namespace CarDealership.Model.Entities
 {
@@ -51,8 +51,6 @@ namespace CarDealership.Model.Entities
         public Car Car { get; set; }
 
         public Seller Seller { get; set; }
-
-        public Discount Discount { get; set; }
 
         public int Price { get; set; }
 

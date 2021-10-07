@@ -1,13 +1,13 @@
-﻿using CarDealership.Business.Factories;
+﻿using CarDealership.Business.Factories.Discount;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
+using CarDealership.Common.Enums;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CarDealership.Business.Factories.Discount;
 
 namespace CarDealership.Business.Implementations
 {
@@ -17,50 +17,29 @@ namespace CarDealership.Business.Implementations
         private readonly IRepository<Discount> _discountRepository;
         private readonly IRepository<Car> _carRepository;
         private readonly IRepository<Seller> _sellerRepository;
-        private readonly IAdRepository _customAdRepository;
-        public AdService(IRepository<Ad> adRepository, IRepository<Discount> discountRepository, IRepository<Car> carRepository, IRepository<Seller> sellerRepository, IAdRepository customAdRepository)
+
+        public AdService(IRepository<Ad> adRepository, IRepository<Discount> discountRepository, IRepository<Car> carRepository, IRepository<Seller> sellerRepository)
         {
             _adRepository = adRepository;
             _discountRepository = discountRepository;
             _carRepository = carRepository;
             _sellerRepository = sellerRepository;
-            _customAdRepository = customAdRepository;
         }
 
-        public async Task<AdPresentationDTO> GetAdByIdAsync(Guid id, string? promoCode)
+        public async Task<Ad> GetAdByIdAsync(Guid id, string? promoCode)
         {
-            //var ad = await _adRepository.GetByIdAsync(id);
-            var ad = _customAdRepository.GetAdByIdNestedAsync(id).Result;
-            var car = await _carRepository.GetByIdAsync(ad.Car.Id);
+            var result = await _adRepository.FilterNestedAsync(x => x.Id.Equals(id), c => c.Car, s => s.Seller);
+            var ad = result.FirstOrDefault();
 
+            if (ad == null) return new Ad();
+
+            // if there is no promo code, no discount is applied
             promoCode ??= "";
-
             var discountObject = _discountRepository.FilterAsync(x => x.PromoCode.Equals(promoCode)).Result.FirstOrDefault();
-
             var discount = DiscountFactory.Create(discountObject);
+            ad.Price = discount.Apply(ad.Price);
 
-            var adDTO = new AdPresentationDTO()
-            {
-                Id = ad.Id,
-                Currency = ad.Currency,
-                Description = ad.Description,
-                Price = discount.Apply(ad.Price),
-                Car = new CarDTO
-                {
-                    Brand = car.Brand,
-                    Model = car.Model,
-                    Power = car.Power,
-                    Seats = car.Seats,
-                    Doors = car.Doors,
-                    ProductionYear = car.ProductionYear,
-                    EngineVolume = car.EngineVolume,
-                    Kilometers = car.Kilometers,
-                    TransmissionType = car.TransmissionType
-                }
-            };
-
-
-            return adDTO;
+            return ad;
         }
 
         public async Task<Ad> AddAdAsync(AdCreationDTO adCreationDTO)
@@ -86,6 +65,18 @@ namespace CarDealership.Business.Implementations
 
             ad.Price = adDTO.Price == 0 ? ad.Price : adDTO.Price;
             ad.Description = adDTO.Description ?? ad.Description;
+
+            if (adDTO.Currency != Currency.NOT_SET)
+            {
+                ad.Currency = adDTO.Currency;
+            }
+
+
+            if (adDTO.CarId != Guid.Empty)
+            {
+                var car = await _carRepository.GetByIdAsync(adDTO.CarId);
+                ad.Car = car;
+            }
 
             return await _adRepository.UpdateAsync(ad);
         }

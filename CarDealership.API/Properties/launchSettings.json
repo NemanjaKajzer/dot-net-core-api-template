@@ -12,7 +12,8 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "car",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:36695",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
