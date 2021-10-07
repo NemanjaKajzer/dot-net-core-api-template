@@ -96,7 +96,7 @@ namespace CarDealership.API.Controllers
             }
             catch (Exception e)
             {
-                _logger.LogError("Car could not be deketed. " + e.Message);
+                _logger.LogError("Car could not be deleted. " + e.Message);
                 return _responseStatus.CustomStatusCode(500, e);
             }
             
