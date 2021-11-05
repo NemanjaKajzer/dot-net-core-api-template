@@ -14,7 +14,7 @@ namespace CarDealership.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AdController : ControllerBase
+    public class AdsController : ControllerBase
     {
 
         private readonly IAdService _adService;
@@ -22,7 +22,7 @@ namespace CarDealership.API.Controllers
         private readonly ILogger _logger;
         private readonly IResponseStatus _responseStatus;
 
-        public AdController(IAdService adService, IMapper mapper, ILogger<AdController> logger, IResponseStatus responseStatus)
+        public AdsController(IAdService adService, IMapper mapper, ILogger<AdsController> logger, IResponseStatus responseStatus)
         {
             _adService = adService;
             _mapper = mapper;
@@ -30,18 +30,20 @@ namespace CarDealership.API.Controllers
             _responseStatus = responseStatus;
         }
 
-        [HttpGet("{id:Guid}")]
-        public async Task<IActionResult> GetAdByIdAsync(Guid id, string? promoCode)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetAdByIdAsync(int id, string? promoCode)
         {
             try
             {
+                if (id == 0) return BadRequest("The id should be greater than 0.");
+
                 var ad = await _adService.GetAdByIdAsync(id, promoCode);
                 var adPresentation = _mapper.Map<AdPresentationDTO>(ad);
 
-                if (ad.Id == Guid.Empty)
+                if (ad.Id == 0)
                 {
                     _logger.LogInformation("Could not find Ad with Id: " + id);
-                    return NoContent();
+                    return NotFound();
                 }
 
                 return Ok(adPresentation);
@@ -60,7 +62,7 @@ namespace CarDealership.API.Controllers
             try
             {
                 var ad = await _adService.AddAdAsync(adCreationDTO);
-                return Created("/api/Ad", ad);
+                return Created("/api/ads", ad);
             }
             catch (Exception e)
             {
@@ -84,13 +86,15 @@ namespace CarDealership.API.Controllers
             }
         }
 
-        [HttpDelete("{id:Guid}")]
-        public async Task<IActionResult> DeleteAdAsync(Guid id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteAdAsync(int id)
         {
             try
             {
+                if (id == 0) return BadRequest("The id should be greater than 0.");
+
                 var ad = await _adService.DeleteAdAsync(id);
-                return Ok(ad);
+                return NoContent();
             }
             catch (Exception e)
             {

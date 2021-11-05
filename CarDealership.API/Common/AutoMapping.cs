@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CarDealership.Business.Implementations;
+using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
 
@@ -12,6 +14,15 @@ namespace CarDealership.API.Common
             CreateMap<Ad, AdCreationDTO>();
             CreateMap<Ad, AdPresentationDTO>();
             CreateMap<Seller, SellerDTO>();
+
+            CreateMap<CarDTO, Car>();
+            CreateMap<AdCreationDTO, Ad>();
+            CreateMap<AdPresentationDTO, Ad>();
+            CreateMap<SellerDTO, Seller>();
+
+            CreateMap<int, Car>().ConvertUsing<ITypeConverter<int, Car>>();
+            CreateMap<int, Ad>().ConvertUsing<ITypeConverter<int, Ad>>();
+            CreateMap<int, Seller>().ConvertUsing<ITypeConverter<int, Seller>>();
         }
     }
 }

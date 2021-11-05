@@ -12,17 +12,17 @@ using Xunit;
 
 namespace CarDealership.UnitTests
 {
-    public class AdControllerTest
+    public class AdsControllerTest
     {
 
         [Fact]
         public void GetAdByIdAsyncTest()
         {
-            var adId = Guid.NewGuid();
+            var adId = 1;
 
             var mockAdService = new Mock<IAdService>();
             var mockMapper = new Mock<IMapper>();
-            var mockLogger = new Mock<ILogger<AdController>>();
+            var mockLogger = new Mock<ILogger<AdsController>>();
             var mockResponse = new Mock<IResponseStatus>();
 
             mockAdService.Setup(adService => adService.GetAdByIdAsync(adId, null)).ReturnsAsync(new Ad { Id = adId });
@@ -30,7 +30,7 @@ namespace CarDealership.UnitTests
             mockResponse.Setup(response =>
                 response.CustomStatusCode(500, It.IsAny<Exception>())).Returns(new StatusCodeResult(500));
 
-            var controller = new AdController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
+            var controller = new AdsController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
 
             var result = controller.GetAdByIdAsync(adId, null).Result as OkObjectResult;
             Assert.NotNull(result);
@@ -40,12 +40,12 @@ namespace CarDealership.UnitTests
         [Fact]
         public void AddAdAsyncTest()
         {
-            var adId = Guid.NewGuid();
+            var adId = 1;
             var expectedDTO = new AdCreationDTO() { Id = adId };
 
             var mockAdService = new Mock<IAdService>();
             var mockMapper = new Mock<IMapper>();
-            var mockLogger = new Mock<ILogger<AdController>>();
+            var mockLogger = new Mock<ILogger<AdsController>>();
             var mockResponse = new Mock<IResponseStatus>();
 
             mockAdService.Setup(sellerService => sellerService.AddAdAsync(expectedDTO)).ReturnsAsync(new Ad { Id = adId });
@@ -53,23 +53,23 @@ namespace CarDealership.UnitTests
             mockResponse.Setup(response =>
                 response.CustomStatusCode(500, new Exception("Object reference not set to an instance of an object.")));
 
-            var controller = new AdController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
+            var controller = new AdsController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
 
-            var result = controller.AddAdAsync(expectedDTO).Result as OkObjectResult;
+            var result = controller.AddAdAsync(expectedDTO).Result as CreatedResult;
 
             Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(201, result.StatusCode);
         }
 
         [Fact]
         public void UpdateAdAsyncTest()
         {
-            var adId = Guid.NewGuid();
+            var adId = 1;
             var inputDTO = new AdCreationDTO { Id = adId, Description = "Changed" };
 
             var mockAdService = new Mock<IAdService>();
             var mockMapper = new Mock<IMapper>();
-            var mockLogger = new Mock<ILogger<AdController>>();
+            var mockLogger = new Mock<ILogger<AdsController>>();
             var mockResponse = new Mock<IResponseStatus>();
 
             mockAdService.Setup(sellerService => sellerService.UpdateAdAsync(inputDTO)).ReturnsAsync(new Ad { Id = adId });
@@ -77,7 +77,7 @@ namespace CarDealership.UnitTests
             mockResponse.Setup(response =>
                 response.CustomStatusCode(500, It.IsAny<Exception>())).Returns(new StatusCodeResult(500));
 
-            var controller = new AdController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
+            var controller = new AdsController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
 
             var result = controller.UpdateAdAsync(inputDTO).Result as OkObjectResult;
 
@@ -92,7 +92,7 @@ namespace CarDealership.UnitTests
 
             var mockAdService = new Mock<IAdService>();
             var mockMapper = new Mock<IMapper>();
-            var mockLogger = new Mock<ILogger<AdController>>();
+            var mockLogger = new Mock<ILogger<AdsController>>();
             var mockResponse = new Mock<IResponseStatus>();
 
             mockAdService.Setup(adService => adService.UpdateAdAsync(notValidDTO)).ThrowsAsync(new Exception("Object reference not set to an instance of an object."));
@@ -100,7 +100,7 @@ namespace CarDealership.UnitTests
             mockResponse.Setup(response =>
                 response.CustomStatusCode(500, It.IsAny<Exception>())).Returns(new StatusCodeResult(500));
 
-            var controller = new AdController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
+            var controller = new AdsController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
 
             var result = controller.UpdateAdAsync(notValidDTO).Result as StatusCodeResult;
 
@@ -111,39 +111,38 @@ namespace CarDealership.UnitTests
         [Fact]
         public void DeleteAdAsyncTest()
         {
-            var adId = Guid.NewGuid();
+            var adId = 1;
             var expectedDTO = new AdCreationDTO { Id = adId };
             var ad = new Ad { Id = adId };
 
             var mockAdService = new Mock<IAdService>();
             var mockMapper = new Mock<IMapper>();
-            var mockLogger = new Mock<ILogger<AdController>>();
+            var mockLogger = new Mock<ILogger<AdsController>>();
             var mockResponse = new Mock<IResponseStatus>();
 
             mockAdService.Setup(adService => adService.GetAdByIdAsync(adId, null)).ReturnsAsync(ad);
-            mockAdService.Setup(adService => adService.DeleteAdAsync(It.IsAny<Guid>())).ReturnsAsync(ad);
+            mockAdService.Setup(adService => adService.DeleteAdAsync(It.IsAny<int>())).ReturnsAsync(ad);
 
             mockMapper.Setup(mapper => mapper.Map<AdCreationDTO>(It.IsAny<Ad>())).Returns(expectedDTO);
             mockResponse.Setup(response =>
                 response.CustomStatusCode(500, It.IsAny<Exception>())).Returns(new StatusCodeResult(500));
 
-            var controller = new AdController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
+            var controller = new AdsController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
 
             var result = controller.DeleteAdAsync(adId).Result as StatusCodeResult;
 
-            Assert.NotNull(result);
-            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(204, result.StatusCode);
         }
 
         [Fact]
         public void DeleteAdInvalidAsyncTest()
         {
-            var invalidId = Guid.NewGuid();
+            var invalidId = 1;
             var expectedDTO = new AdCreationDTO { Id = invalidId };
 
             var mockAdService = new Mock<IAdService>();
             var mockMapper = new Mock<IMapper>();
-            var mockLogger = new Mock<ILogger<AdController>>();
+            var mockLogger = new Mock<ILogger<AdsController>>();
             var mockResponse = new Mock<IResponseStatus>();
 
             mockAdService.Setup(adService => adService.DeleteAdAsync(invalidId)).ThrowsAsync(new Exception("Object reference not set to an instance of an object."));
@@ -152,7 +151,7 @@ namespace CarDealership.UnitTests
             mockResponse.Setup(response =>
                 response.CustomStatusCode(500, It.IsAny<Exception>())).Returns(new StatusCodeResult(500));
 
-            var controller = new AdController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
+            var controller = new AdsController(mockAdService.Object, mockMapper.Object, mockLogger.Object, mockResponse.Object);
 
             var result = controller.DeleteAdAsync(invalidId).Result as StatusCodeResult;
 

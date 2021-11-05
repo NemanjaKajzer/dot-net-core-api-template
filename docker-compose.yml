@@ -5,4 +5,4 @@ services:
     image: ${DOCKER_REGISTRY-}cardealershipapi
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: CarDealership.API\Dockerfile

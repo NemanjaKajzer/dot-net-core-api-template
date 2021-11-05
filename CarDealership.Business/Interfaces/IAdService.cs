@@ -7,12 +7,12 @@ namespace CarDealership.Business.Interfaces
 {
     public interface IAdService
     {
-        Task<Ad> GetAdByIdAsync(Guid id, string promoCode);
+        Task<Ad> GetAdByIdAsync(int id, string promoCode);
 
         Task<Ad> AddAdAsync(AdCreationDTO adCreationDTO);
 
         Task<Ad> UpdateAdAsync(AdCreationDTO adCreationDTO);
 
-        Task<Ad> DeleteAdAsync(Guid id);
+        Task<Ad> DeleteAdAsync(int id);
     }
 }

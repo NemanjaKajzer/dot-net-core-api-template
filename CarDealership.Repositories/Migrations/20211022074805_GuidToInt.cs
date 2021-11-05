@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CarDealership.Repositories.Migrations
 {
-    public partial class productionyearint : Migration
+    public partial class GuidToInt : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,7 +11,8 @@ namespace CarDealership.Repositories.Migrations
                 name: "Cars",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Brand = table.Column<string>(type: "text", nullable: true),
                     Model = table.Column<string>(type: "text", nullable: true),
                     Power = table.Column<int>(type: "integer", nullable: false),
@@ -31,7 +32,8 @@ namespace CarDealership.Repositories.Migrations
                 name: "Discount",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     PromoCode = table.Column<string>(type: "text", nullable: true),
                     Value = table.Column<int>(type: "integer", nullable: false)
@@ -45,7 +47,8 @@ namespace CarDealership.Repositories.Migrations
                 name: "Seller",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Surname = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true)
@@ -59,9 +62,10 @@ namespace CarDealership.Repositories.Migrations
                 name: "Ad",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CarId = table.Column<Guid>(type: "uuid", nullable: true),
-                    SellerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CarId = table.Column<int>(type: "integer", nullable: true),
+                    SellerId = table.Column<int>(type: "integer", nullable: true),
                     Price = table.Column<int>(type: "integer", nullable: false),
                     Currency = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true)
@@ -88,8 +92,8 @@ namespace CarDealership.Repositories.Migrations
                 columns: new[] { "Id", "Brand", "Doors", "EngineVolume", "Kilometers", "Model", "Power", "ProductionYear", "Seats", "TransmissionType" },
                 values: new object[,]
                 {
-                    { new Guid("c5d040f0-aa56-4923-8c03-82689650554d"), "BMW", 5, 1999, 100000, "520", 150, 2000, 5, 2 },
-                    { new Guid("2523e318-f9fc-4beb-9347-e1ab0ae14347"), "Audi", 5, 1800, 90000, "Q3", 170, 2010, 5, 1 }
+                    { 1, "BMW", 5, 1999, 100000, "520", 150, 2000, 5, 2 },
+                    { 2, "Audi", 5, 1800, 90000, "Q3", 170, 2010, 5, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -97,16 +101,16 @@ namespace CarDealership.Repositories.Migrations
                 columns: new[] { "Id", "PromoCode", "Type", "Value" },
                 values: new object[,]
                 {
-                    { new Guid("70511618-91ac-451f-8c45-5b52d2da9f86"), "NEW", 1, 100 },
-                    { new Guid("e7902086-8de5-4581-816c-d2c301448f10"), "RETURN", 2, 5 },
-                    { new Guid("bb6ff972-0c1f-4f12-b089-a12a301f7dea"), "BF2021", 3, 10 },
-                    { new Guid("0f68dad7-1809-477e-82b6-145dd7d98904"), "No Discount", 0, 1 }
+                    { 1, "NEW", 1, 100 },
+                    { 2, "RETURN", 2, 5 },
+                    { 3, "BF2021", 3, 10 },
+                    { 4, "No Discount", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Seller",
                 columns: new[] { "Id", "Email", "Name", "Surname" },
-                values: new object[] { new Guid("b1846008-e76a-4f59-aa64-cd247896a63e"), "john.smith@js.com", "John", "Smith" });
+                values: new object[] { 1, "john.smith@js.com", "John", "Smith" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ad_CarId",

@@ -21,28 +21,28 @@ namespace CarDealership.Repositories
                 .HasData(
                     new Discount
                     {
-                        Id = Guid.NewGuid(),
+                        Id = 1,
                         PromoCode = "NEW",
                         Type = DiscountTypes.NEW_CUSTOMER,
                         Value = 100
                     },
                     new Discount
                     {
-                        Id = Guid.NewGuid(),
+                        Id = 2,
                         PromoCode = "RETURN",
                         Type = DiscountTypes.RETURNING_CUSTOMER,
                         Value = 5
                     },
                     new Discount
                     {
-                        Id = Guid.NewGuid(),
+                        Id = 3,
                         PromoCode = "BF2021",
                         Type = DiscountTypes.BLACK_FRIDAY,
                         Value = 10
                     },
                     new Discount
                     {
-                        Id = Guid.NewGuid(),
+                        Id = 4,
                         PromoCode = "No Discount",
                         Type = DiscountTypes.NO_DISCOUNT,
                         Value = 1
@@ -52,7 +52,7 @@ namespace CarDealership.Repositories
             var cars = new Car[] {
                 new Car
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 1,
                     Brand = "BMW",
                     Model = "520",
                     Power = 150,
@@ -65,7 +65,7 @@ namespace CarDealership.Repositories
                 },
                 new Car
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 2,
                     Brand = "Audi",
                     Model = "Q3",
                     Power = 170,
@@ -86,7 +86,7 @@ namespace CarDealership.Repositories
                 .HasData(
                     new Seller
                     {
-                        Id = Guid.NewGuid(),
+                        Id = 1,
                         Name = "John",
                         Surname = "Smith",
                         Email = "john.smith@js.com",

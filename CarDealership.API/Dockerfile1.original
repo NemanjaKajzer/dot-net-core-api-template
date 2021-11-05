@@ -9,14 +9,14 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["CarDealership.API/CarDealership.API.csproj", "CarDealership.API/"]
-COPY ["CarDealership.Repositories/CarDealership.Repositories.csproj", "CarDealership.Repositories/"]
-COPY ["CarDealership.Model/CarDealership.Model.csproj", "CarDealership.Model/"]
-COPY ["CarDealership.Common/CarDealership.Common.csproj", "CarDealership.Common/"]
-COPY ["CarDealership.Business/CarDealership.Business.csproj", "CarDealership.Business/"]
-RUN dotnet restore "CarDealership.API/CarDealership.API.csproj"
+COPY ["CarDealership.API.csproj", "."]
+COPY ["../CarDealership.Repositories/CarDealership.Repositories.csproj", "../CarDealership.Repositories/"]
+COPY ["../CarDealership.Model/CarDealership.Model.csproj", "../CarDealership.Model/"]
+COPY ["../CarDealership.Common/CarDealership.Common.csproj", "../CarDealership.Common/"]
+COPY ["../CarDealership.Business/CarDealership.Business.csproj", "../CarDealership.Business/"]
+RUN dotnet restore "CarDealership.API.csproj"
 COPY . .
-WORKDIR "/src/CarDealership.API"
+WORKDIR "/src/"
 RUN dotnet build "CarDealership.API.csproj" -c Release -o /app/build
 
 FROM build AS publish

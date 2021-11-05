@@ -17,7 +17,7 @@ namespace CarDealership.Repositories.Implementations
             _dbContext = dbContext;
         }
 
-        public async Task<TEntity> GetByIdAsync(Guid id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
             return await _dbContext.Set<TEntity>().FindAsync(id);
         }
@@ -39,7 +39,7 @@ namespace CarDealership.Repositories.Implementations
             return entity;
         }
 
-        public async Task<TEntity> DeleteByIdAsync(Guid id)
+        public async Task<TEntity> DeleteByIdAsync(int id)
         {
             var entity = await _dbContext.Set<TEntity>().FindAsync(id);
 

@@ -11,7 +11,7 @@ namespace CarDealership.Common.DTOs
             
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public CarDTO Car { get; set; }
 

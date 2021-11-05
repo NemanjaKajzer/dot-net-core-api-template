@@ -44,12 +44,15 @@ namespace CarDealership.API
             services.AddScoped<IAdService, AdService>();
             services.AddScoped<ISellerService, SellerService>();
 
+            services.AddScoped<ITypeConverter<int, Car>, TypeConverter<Car>>();
+
             // register repositories
             services.AddScoped<IRepository<Car>, Repository<Car>>();
             services.AddScoped<IRepository<Ad>, Repository<Ad>>();
             services.AddScoped<IRepository<Seller>, Repository<Seller>>();
             services.AddScoped<IRepository<Discount>, Repository<Discount>>();
             services.AddScoped<IAdRepository, AdRepository>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             // register dbContext
             services.AddScoped<DbContext, ApplicationContext>();

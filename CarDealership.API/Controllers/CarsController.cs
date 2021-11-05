@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using CarDealership.API.Common.Response;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
 
 namespace CarDealership.API.Controllers
@@ -13,7 +14,7 @@ namespace CarDealership.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CarController : ControllerBase
+    public class CarsController : ControllerBase
     {
 
         private readonly ICarService _carService;
@@ -21,7 +22,7 @@ namespace CarDealership.API.Controllers
         private readonly ILogger _logger;
         private readonly IResponseStatus _responseStatus;
 
-        public CarController(ICarService carService, IMapper mapper, ILogger<CarController> logger, IResponseStatus responseStatus)
+        public CarsController(ICarService carService, IMapper mapper, ILogger<CarsController> logger, IResponseStatus responseStatus)
         {
             _carService = carService;
             _mapper = mapper;
@@ -29,15 +30,15 @@ namespace CarDealership.API.Controllers
             _responseStatus = responseStatus;
         }
 
-        [HttpGet("{id:Guid}")]
-        public async Task<IActionResult> GetCarByIdAsync(Guid id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetCarByIdAsync(int id)
         {
             try
             {
                 var car = await _carService.GetCarByIdAsync(id);
                 var carDTO = _mapper.Map<CarDTO>(car);
 
-                if (car.Id.Equals(Guid.Empty))
+                if (car == null)
                 {
                     _logger.LogInformation("Could not find Car with Id: " + id);
                     return NotFound();
@@ -59,7 +60,7 @@ namespace CarDealership.API.Controllers
             try
             {
                 var car = await _carService.AddCarAsync(carDto);
-                return Ok(car);
+                return Created("/api/cars", car);
             }
             catch (Exception e)
             {
@@ -86,13 +87,13 @@ namespace CarDealership.API.Controllers
         }
 
 
-        [HttpDelete("{id:Guid}")]
-        public async Task<IActionResult> DeleteCarAsync(Guid id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteCarAsync(int id)
         {
             try
             {
                 var car = await _carService.DeleteCarAsync(id);
-                return Ok(car);
+                return NoContent();
             }
             catch (Exception e)
             {
