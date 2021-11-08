@@ -1,12 +1,10 @@
-﻿using CarDealership.Business.Interfaces;
+﻿using AutoMapper;
+using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Common.Enums;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace CarDealership.Business.Implementations
 {
@@ -26,31 +24,31 @@ namespace CarDealership.Business.Implementations
             return _carRepository.GetByIdAsync(id);
         }
 
-        public async Task<Car> AddCarAsync(CarDTO carDto)
+        public async Task<Car> AddCarAsync(CarDTO carDTO)
         {
-            var newCar = _mapper.Map<Car>(carDto);
+            var newCar = _mapper.Map<Car>(carDTO);
 
             return await _carRepository.AddAsync(newCar);
         }
 
-        public async Task<Car> UpdateCarAsync(CarDTO carDto)
+        public async Task<Car> UpdateCarAsync(CarDTO carDTO)
         {
-            var car = _carRepository.GetByIdAsync(carDto.Id).Result;
+            var car = _carRepository.GetByIdAsync(carDTO.Id).Result;
 
-            car.Brand = carDto.Brand ?? car.Brand;
-            car.Model = carDto.Model ?? car.Model;
+            car.Brand = carDTO.Brand ?? car.Brand;
+            car.Model = carDTO.Model ?? car.Model;
 
-            car.Power = carDto.Power == 0 ? car.Power : carDto.Power;
-            car.Seats = carDto.Seats == 0 ? car.Seats : carDto.Seats;
-            car.Doors = carDto.Doors == 0 ? car.Doors : carDto.Doors;
-            car.EngineVolume = carDto.EngineVolume == 0 ? car.EngineVolume : carDto.EngineVolume;
-            car.Kilometers = carDto.Kilometers == 0 ? car.Kilometers : carDto.Kilometers;
+            car.Power = carDTO.Power == 0 ? car.Power : carDTO.Power;
+            car.Seats = carDTO.Seats == 0 ? car.Seats : carDTO.Seats;
+            car.Doors = carDTO.Doors == 0 ? car.Doors : carDTO.Doors;
+            car.EngineVolume = carDTO.EngineVolume == 0 ? car.EngineVolume : carDTO.EngineVolume;
+            car.Kilometers = carDTO.Kilometers == 0 ? car.Kilometers : carDTO.Kilometers;
 
-            car.ProductionYear = carDto.ProductionYear == 0 ? car.ProductionYear : carDto.ProductionYear;
+            car.ProductionYear = carDTO.ProductionYear == 0 ? car.ProductionYear : carDTO.ProductionYear;
 
-            if (carDto.TransmissionType != TransmissionType.NOT_SET)
+            if (carDTO.TransmissionType != TransmissionType.NOT_SET)
             {
-                car.TransmissionType = carDto.TransmissionType;
+                car.TransmissionType = carDTO.TransmissionType;
             }
 
             return await _carRepository.UpdateAsync(car);

@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CarDealership.Business.Implementations;
 using CarDealership.Business.Interfaces;
 using CarDealership.Model.Entities;
@@ -28,7 +29,8 @@ namespace CarDealership.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve); ;
             services.AddAutoMapper(typeof(Startup));
 
             //Register the Swagger generator, defining 1 or more Swagger documents
@@ -45,13 +47,11 @@ namespace CarDealership.API
             services.AddScoped<ISellerService, SellerService>();
 
             services.AddScoped<ITypeConverter<int, Car>, TypeConverter<Car>>();
+            services.AddScoped<ITypeConverter<int, Seller>, TypeConverter<Seller>>();
+            services.AddScoped<ITypeConverter<int, Ad>, TypeConverter<Ad>>();
+            services.AddScoped<ITypeConverter<int, Discount>, TypeConverter<Discount>>();
 
             // register repositories
-            services.AddScoped<IRepository<Car>, Repository<Car>>();
-            services.AddScoped<IRepository<Ad>, Repository<Ad>>();
-            services.AddScoped<IRepository<Seller>, Repository<Seller>>();
-            services.AddScoped<IRepository<Discount>, Repository<Discount>>();
-            services.AddScoped<IAdRepository, AdRepository>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             // register dbContext

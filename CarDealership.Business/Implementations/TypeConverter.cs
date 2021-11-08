@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using CarDealership.Repositories.Interfaces;
 
 namespace CarDealership.Business.Implementations

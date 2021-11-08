@@ -15,9 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarDealership.Common", "Car
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{94F88442-69DC-47BC-A2F2-DDC79FB5DFCF}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{811911D5-583D-429B-A750-4378BE48A2AD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDealership.UnitTests", "CarDealership.UnitTests\CarDealership.UnitTests.csproj", "{BEC6B688-1C0F-492C-B602-FBD6D97EBD1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarDealership.UnitTests", "CarDealership.UnitTests\CarDealership.UnitTests.csproj", "{BEC6B688-1C0F-492C-B602-FBD6D97EBD1A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,10 +43,6 @@ Global
 		{3430CF96-F410-4612-AE9C-9925AA6470C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3430CF96-F410-4612-AE9C-9925AA6470C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3430CF96-F410-4612-AE9C-9925AA6470C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{811911D5-583D-429B-A750-4378BE48A2AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{811911D5-583D-429B-A750-4378BE48A2AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{811911D5-583D-429B-A750-4378BE48A2AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{811911D5-583D-429B-A750-4378BE48A2AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BEC6B688-1C0F-492C-B602-FBD6D97EBD1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BEC6B688-1C0F-492C-B602-FBD6D97EBD1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEC6B688-1C0F-492C-B602-FBD6D97EBD1A}.Release|Any CPU.ActiveCfg = Release|Any CPU

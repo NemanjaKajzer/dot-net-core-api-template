@@ -1,14 +1,13 @@
-﻿using CarDealership.Business.Factories.Discount;
+﻿using AutoMapper;
+using CarDealership.Business.Factories.Discount;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Common.Enums;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 
 namespace CarDealership.Business.Implementations
 {
@@ -49,6 +48,8 @@ namespace CarDealership.Business.Implementations
         {
             var ad = _mapper.Map<Ad>(adCreationDTO);
             var seller = _mapper.Map<int, Seller>(adCreationDTO.SellerId);
+            var car = _mapper.Map<int, Car>(adCreationDTO.CarId);
+
             ad = await _adRepository.AddAsync(ad);
 
             // add ad to seller's ads (this will write SellerId into Ad row)
@@ -59,7 +60,6 @@ namespace CarDealership.Business.Implementations
             ad.Seller = seller;
 
             // assign Car to Ad
-            var car = _carRepository.GetByIdAsync(adCreationDTO.CarId).Result;
             ad.Car = car;
             return await _adRepository.UpdateAsync(ad);
 

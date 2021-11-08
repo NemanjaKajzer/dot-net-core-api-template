@@ -1,13 +1,11 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
+using CarDealership.API.Common.Response;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
-using CarDealership.API.Common.Response;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Logging;
 
 namespace CarDealership.API.Controllers
 
@@ -55,11 +53,11 @@ namespace CarDealership.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCarAsync(CarDTO carDto)
+        public async Task<IActionResult> AddCarAsync(CarDTO carDTO)
         {
             try
             {
-                var car = await _carService.AddCarAsync(carDto);
+                var car = await _carService.AddCarAsync(carDTO);
                 return Created("/api/cars", car);
             }
             catch (Exception e)

@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+using CarDealership.API.Common.Response;
 using CarDealership.API.Controllers;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
-using CarDealership.API.Common.Response;
-using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace CarDealership.UnitTests

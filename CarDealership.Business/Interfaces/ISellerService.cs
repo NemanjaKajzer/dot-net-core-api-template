@@ -1,9 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-using CarDealership.Common.DTOs;
+﻿using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
-using CarDealership.Repositories.Interfaces;
-using Microsoft.AspNetCore.JsonPatch;
+using System.Threading.Tasks;
 
 namespace CarDealership.Business.Interfaces
 {
@@ -12,8 +9,6 @@ namespace CarDealership.Business.Interfaces
         Task<Seller> GetSellerByIdAsync(int id);
 
         Task<Seller> AddSellerAsync(SellerDTO sellerDTO);
-
-        //Task<Seller> UpdateSellerAsync(Guid id, JsonPatchDocument<Seller> patchDoc);
 
         Task<Seller> UpdateSellerAsync(SellerDTO sellerDTO);
 

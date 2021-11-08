@@ -1,11 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using Microsoft.AspNetCore.JsonPatch;
+using System.Threading.Tasks;
 
 namespace CarDealership.Business.Implementations
 {

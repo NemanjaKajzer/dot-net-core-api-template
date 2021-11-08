@@ -11,7 +11,7 @@ namespace CarDealership.Business.Interfaces
 
         Task<Car> AddCarAsync(CarDTO carDTO);
 
-        Task<Car> UpdateCarAsync(CarDTO carDto);
+        Task<Car> UpdateCarAsync(CarDTO carDTO);
 
         Task<Car> DeleteCarAsync(int id);
     }

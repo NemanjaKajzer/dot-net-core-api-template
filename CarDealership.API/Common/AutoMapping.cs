@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using CarDealership.Business.Implementations;
-using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
 
