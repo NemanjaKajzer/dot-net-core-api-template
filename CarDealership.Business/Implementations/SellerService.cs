@@ -1,30 +1,31 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using Microsoft.AspNetCore.JsonPatch;
+using System.Threading.Tasks;
 
 namespace CarDealership.Business.Implementations
 {
     public class SellerService : ISellerService
     {
         private readonly IRepository<Seller> _sellerRepository;
+        private readonly IMapper _mapper;
 
-        public SellerService(IRepository<Seller> sellerRepository)
+        public SellerService(IRepository<Seller> sellerRepository, IMapper mapper)
         {
             _sellerRepository = sellerRepository;
+            _mapper = mapper;
         }
 
-        public Task<Seller> GetSellerByIdAsync(Guid id)
+        public Task<Seller> GetSellerByIdAsync(int id)
         {
             return _sellerRepository.GetByIdAsync(id);
         }
 
         public async Task<Seller> AddSellerAsync(SellerDTO sellerDTO)
         {
-            var newSeller = new Seller(sellerDTO);
+            var newSeller = _mapper.Map<Seller>(sellerDTO);
 
             return await _sellerRepository.AddAsync(newSeller);
         }
@@ -40,7 +41,7 @@ namespace CarDealership.Business.Implementations
             return await _sellerRepository.UpdateAsync(seller);
         }
 
-        public async Task<Seller> DeleteSellerAsync(Guid id)
+        public async Task<Seller> DeleteSellerAsync(int id)
         {
             return await _sellerRepository.DeleteByIdAsync(id);
         }

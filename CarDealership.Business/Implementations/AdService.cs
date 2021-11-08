@@ -1,10 +1,10 @@
-﻿using CarDealership.Business.Factories.Discount;
+﻿using AutoMapper;
+using CarDealership.Business.Factories.Discount;
 using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Common.Enums;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,16 +17,18 @@ namespace CarDealership.Business.Implementations
         private readonly IRepository<Discount> _discountRepository;
         private readonly IRepository<Car> _carRepository;
         private readonly IRepository<Seller> _sellerRepository;
+        private readonly IMapper _mapper;
 
-        public AdService(IRepository<Ad> adRepository, IRepository<Discount> discountRepository, IRepository<Car> carRepository, IRepository<Seller> sellerRepository)
+        public AdService(IRepository<Ad> adRepository, IRepository<Discount> discountRepository, IRepository<Car> carRepository, IRepository<Seller> sellerRepository, IMapper mapper)
         {
             _adRepository = adRepository;
             _discountRepository = discountRepository;
             _carRepository = carRepository;
             _sellerRepository = sellerRepository;
+            _mapper = mapper;
         }
 
-        public async Task<Ad> GetAdByIdAsync(Guid id, string? promoCode)
+        public async Task<Ad> GetAdByIdAsync(int id, string? promoCode)
         {
             var result = await _adRepository.FilterNestedAsync(x => x.Id.Equals(id), c => c.Car, s => s.Seller);
             var ad = result.FirstOrDefault();
@@ -44,16 +46,20 @@ namespace CarDealership.Business.Implementations
 
         public async Task<Ad> AddAdAsync(AdCreationDTO adCreationDTO)
         {
-            var ad = new Ad(adCreationDTO);
+            var ad = _mapper.Map<Ad>(adCreationDTO);
+            var seller = _mapper.Map<int, Seller>(adCreationDTO.SellerId);
+            var car = _mapper.Map<int, Car>(adCreationDTO.CarId);
+
             ad = await _adRepository.AddAsync(ad);
 
             // add ad to seller's ads (this will write SellerId into Ad row)
-            var seller = _sellerRepository.GetByIdAsync(adCreationDTO.SellerId).Result;
+            //var seller = _sellerRepository.GetByIdAsync(adCreationDTO.SellerId).Result;
             seller.Ads ??= new List<Ad>() { ad };
             await _sellerRepository.UpdateAsync(seller);
 
+            ad.Seller = seller;
+
             // assign Car to Ad
-            var car = _carRepository.GetByIdAsync(adCreationDTO.CarId).Result;
             ad.Car = car;
             return await _adRepository.UpdateAsync(ad);
 
@@ -72,7 +78,7 @@ namespace CarDealership.Business.Implementations
             }
 
 
-            if (adDTO.CarId != Guid.Empty)
+            if (adDTO.CarId != 0)
             {
                 var car = await _carRepository.GetByIdAsync(adDTO.CarId);
                 ad.Car = car;
@@ -81,7 +87,7 @@ namespace CarDealership.Business.Implementations
             return await _adRepository.UpdateAsync(ad);
         }
 
-        public async Task<Ad> DeleteAdAsync(Guid id)
+        public async Task<Ad> DeleteAdAsync(int id)
         {
             return await _adRepository.DeleteByIdAsync(id);
         }

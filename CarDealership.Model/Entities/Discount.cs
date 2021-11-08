@@ -11,7 +11,7 @@ namespace CarDealership.Model.Entities
     {
         public Discount() { }
 
-        public Discount(Guid id, string description, int value)
+        public Discount(int id, string description, int value)
         {
             Id = id;
             PromoCode = description;
@@ -19,7 +19,7 @@ namespace CarDealership.Model.Entities
         }
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public DiscountTypes Type { get; set; }
 

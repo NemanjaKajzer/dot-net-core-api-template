@@ -1,7 +1,6 @@
 ﻿using CarDealership.Business.Interfaces;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using System;
 using System.Threading.Tasks;
 
 namespace CarDealership.Business.Implementations
@@ -15,7 +14,7 @@ namespace CarDealership.Business.Implementations
             _discountRepository = discountRepository;
         }
 
-        public async Task<Discount> GetByIdAsync(Guid id)
+        public async Task<Discount> GetByIdAsync(int id)
         {
             return  await _discountRepository.GetByIdAsync(id);
         }

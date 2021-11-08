@@ -11,12 +11,12 @@ namespace CarDealership.Common.DTOs
             
         }
 
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
-        public Guid CarId { get; set; }
+        public int CarId { get; set; }
 
         [Required]
-        public Guid SellerId { get; set; }
+        public int SellerId { get; set; }
 
         public int Price { get; set; }
 

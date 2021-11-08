@@ -7,12 +7,12 @@ namespace CarDealership.Business.Interfaces
 {
     public interface ICarService
     {
-        Task<Car> GetCarByIdAsync(Guid id);
+        Task<Car> GetCarByIdAsync(int id);
 
         Task<Car> AddCarAsync(CarDTO carDTO);
 
         Task<Car> UpdateCarAsync(CarDTO carDTO);
 
-        Task<Car> DeleteCarAsync(Guid id);
+        Task<Car> DeleteCarAsync(int id);
     }
 }

@@ -1,10 +1,9 @@
-﻿using CarDealership.Business.Interfaces;
+﻿using AutoMapper;
+using CarDealership.Business.Interfaces;
 using CarDealership.Common.DTOs;
 using CarDealership.Common.Enums;
 using CarDealership.Model.Entities;
 using CarDealership.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CarDealership.Business.Implementations
@@ -12,25 +11,22 @@ namespace CarDealership.Business.Implementations
     public class CarService : ICarService
     {
         private readonly IRepository<Car> _carRepository;
+        private readonly IMapper _mapper;
 
-        public CarService(IRepository<Car> carRepository)
+        public CarService(IRepository<Car> carRepository, IMapper mapper)
         {
             _carRepository = carRepository;
+            _mapper = mapper;
         }
 
-        public Task<Car> GetCarByIdAsync(Guid id)
+        public Task<Car> GetCarByIdAsync(int id)
         {
             return _carRepository.GetByIdAsync(id);
         }
 
-        public Task<IEnumerable<Car>> FilterCarsAsync()
+        public async Task<Car> AddCarAsync(CarDTO carDTO)
         {
-            return _carRepository.FilterAsync(c => c.Brand.Equals("BMW"));
-        }
-
-        public async Task<Car> AddCarAsync(CarDTO carDto)
-        {
-            var newCar = new Car(carDto);
+            var newCar = _mapper.Map<Car>(carDTO);
 
             return await _carRepository.AddAsync(newCar);
         }
@@ -60,7 +56,7 @@ namespace CarDealership.Business.Implementations
 
 
 
-        public async Task<Car> DeleteCarAsync(Guid id)
+        public async Task<Car> DeleteCarAsync(int id)
         {
             return await _carRepository.DeleteByIdAsync(id);
         }

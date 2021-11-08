@@ -1,5 +1,4 @@
-﻿using CarDealership.Common.DTOs;
-using CarDealership.Common.Enums;
+﻿using CarDealership.Common.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,20 +8,7 @@ namespace CarDealership.Model.Entities
     {
         public Car() { }
 
-        public Car(CarDTO carDto)
-        {
-            Brand = carDto.Brand;
-            Model = carDto.Model;
-            Power = carDto.Power;
-            Seats = carDto.Seats;
-            Doors = carDto.Doors;
-            ProductionYear = carDto.ProductionYear;
-            EngineVolume = carDto.EngineVolume;
-            Kilometers = carDto.Kilometers;
-            TransmissionType = carDto.TransmissionType;
-        }
-
-        public Car(Guid id, string brand, string model, int power, int seats, int doors, int productionYear, int engineVolume, int kilometers, TransmissionType transmissionType)
+        public Car(int id, string brand, string model, int power, int seats, int doors, int productionYear, int engineVolume, int kilometers, TransmissionType transmissionType)
         {
             Id = id;
             Brand = brand;
@@ -37,7 +23,7 @@ namespace CarDealership.Model.Entities
         }
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Brand { get; set; }
 

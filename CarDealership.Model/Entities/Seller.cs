@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using CarDealership.Common.DTOs;
 
 namespace CarDealership.Model.Entities
 {
@@ -11,15 +9,7 @@ namespace CarDealership.Model.Entities
     {
         public Seller() { }
 
-        public Seller(SellerDTO sellerDTO)
-        {
-            Id = sellerDTO.Id;
-            Name = sellerDTO.Name;
-            Surname = sellerDTO.Surname;
-            Email = sellerDTO.Email;
-        }
-
-        public Seller(Guid id, string name, string surname, string email)
+        public Seller(int id, string name, string surname, string email)
         {
             Id = id;
             Name = name;
@@ -28,7 +18,7 @@ namespace CarDealership.Model.Entities
         }
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         public string Name { get; set; }
 

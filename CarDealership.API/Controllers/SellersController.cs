@@ -13,14 +13,14 @@ namespace CarDealership.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SellerController : ControllerBase
+    public class SellersController : ControllerBase
     {
         private readonly ISellerService _sellerService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
         private readonly IResponseStatus _responseStatus;
 
-        public SellerController(ISellerService sellerService, IMapper mapper, ILogger<SellerController> logger, IResponseStatus responseStatus)
+        public SellersController(ISellerService sellerService, IMapper mapper, ILogger<SellersController> logger, IResponseStatus responseStatus)
         {
             _sellerService = sellerService;
             _mapper = mapper;
@@ -29,8 +29,8 @@ namespace CarDealership.API.Controllers
         }
 
 
-        [HttpGet("{id:Guid}")]
-        public async Task<IActionResult> GetSellerByIdAsync(Guid id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetSellerByIdAsync(int id)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace CarDealership.API.Controllers
             try
             {
                 var seller = await _sellerService.AddSellerAsync(sellerDTO);
-                return Created("/api/seller", seller);
+                return Created("/api/sellers", seller);
             }
             catch (Exception e)
             {
@@ -85,13 +85,13 @@ namespace CarDealership.API.Controllers
         }
 
 
-        [HttpDelete("{id:Guid}")]
-        public async Task<IActionResult> DeleteSellerAsync(Guid id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteSellerAsync(int id)
         {
             try
             {
                 var seller = await _sellerService.DeleteSellerAsync(id);
-                return Ok(seller);
+                return NoContent();
             }
             catch (Exception e)
             {
